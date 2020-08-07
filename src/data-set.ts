@@ -4,7 +4,6 @@ import { Query } from './query';
 
 /** 前端数据集模块 */
 export class DataSet {
-
   private data = [];
 
   constructor(data: Data) {
