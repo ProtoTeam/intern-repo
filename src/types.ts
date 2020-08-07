@@ -13,3 +13,8 @@ export type Field = {
   /** 字段名 */
   readonly field: string;
 }
+
+export type OrderBy = {
+  readonly field?: string;
+  readonly asc?: boolean;
+}
