@@ -1,5 +1,5 @@
-import { Data, Field, Options, Order, Datum, Groups } from "./types";
-import _ from "lodash";
+import { Data, Field, Options, Order, Datum, Groups } from './types';
+import * as _ from 'lodash';
 
 export class Query {
   private data: Data;
@@ -30,7 +30,7 @@ export class Query {
    * @param asc
    */
   public orderBy(fields: string, asc?: boolean): Query {
-    const order: Order = { order: asc ? "asc" : "desc", orderBy: fields };
+    const order: Order = { order: asc ? 'asc' : 'desc', orderBy: fields };
 
     this.options = {
       ...this.options,
@@ -73,9 +73,12 @@ export class Query {
   public record(): Data {
     const { select, orders, limit, gKey } = this.options;
 
-    const agg = select.find((e) => e.aggregate !== "raw");
+    const agg = select?.find((e) => e.aggregate !== 'raw');
 
     if (!agg) {
+      if (!orders) {
+        return this.data;
+      }
       return _.orderBy(
         this.data,
         orders.map((e) => e.orderBy),
@@ -107,13 +110,12 @@ export class Query {
         }
         default:
       }
-
     });
 
     return _.orderBy(
       res,
       orders.map((e) => e.orderBy),
       orders.map((e) => e.order)
-    );;
+    );
   }
 }
