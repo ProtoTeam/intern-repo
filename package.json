@@ -3,11 +3,22 @@
   "version": "0.1.0",
   "description": "",
   "main": "index.js",
+  "files": [
+    "lib",
+    "esm",
+    "src"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "fix": "eslint --ext .ts ./src ./__tests__ --fix && prettier --write ./src ./__tests__",
     "lint": "eslint --ext .ts ./src ./__tests__",
-    "lint-staged": "lint-staged"
+    "lint-staged": "lint-staged",
+    "test": "jest",
+    "test-live": "DEBUG_MODE=1 jest --watch ./__tests__",
+    "coverage": "jest --coverage",
+    "build": "npm run lib:cjs && npm run lib:esm",
+    "lib:cjs": "tsc -p tsconfig.json --target ES5 --module commonjs --outDir lib",
+    "lib:esm": "tsc -p tsconfig.json --target ES5 --module ESNext --outDir esm",
+    "dist": "webpack --config webpack.config.js --mode production"
   },
   "repository": {
     "type": "git",
@@ -40,11 +51,22 @@
     "rimraf": "^3.0.0",
     "ts-jest": "^25.4.0",
     "ts-loader": "^7.0.0",
-    "typescript": "^3.5.3",
-    "webpack": "^4.39.2",
-    "webpack-bundle-analyzer": "^3.4.1",
-    "webpack-cli": "^3.3.7",
-    "webpack-dev-server": "^3.9.0"
+    "typescript": "^3.5.3"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "collectCoverage": false,
+    "collectCoverageFrom": [
+      "src/**/*.ts",
+      "!**/node_modules/**",
+      "!**/vendor/**"
+    ],
+    "testRegex": "/__tests__/.*-spec\\.ts?$"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint & npm run test"
+    }
   },
   "lint-staged": {
     "*.ts": [

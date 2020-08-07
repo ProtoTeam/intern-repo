@@ -17,7 +17,7 @@ export function SUM(field: string): Field {
  */
 export function MAX(field: string): Field {
   return {
-    aggregate: 'sum',
+    aggregate: 'max',
     field,
   };
 }
