@@ -9,7 +9,21 @@ export type Data = Datum[];
  */
 export type Field = {
   /** 聚合函数 */
-  readonly aggregate: 'sum' | 'max' | 'max' | 'raw'; // 可扩展
+  readonly aggregate: 'sum' | 'max' | 'min' | 'raw'; // 可扩展
   /** 字段名 */
   readonly field: string;
 }
+
+export type Order = {
+  order?: 'asc' | 'desc';
+  orderBy?: string;
+}
+
+export type Options = {
+  select?: Field[];
+  orders?: Order[];
+  limit?: number;
+  gKey?: string;
+}
+
+export type Groups = Map<string, Data>;

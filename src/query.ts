@@ -94,8 +94,20 @@ export class Query {
 
     const res = [];
     groups.forEach(([gv, data]: [any, Data]) => {
-      const target = _.maxBy(data, (r) => r[agg.field]);
-      res.push(target);
+      switch (agg.field) {
+        case 'max': {
+          const target = _.maxBy(data, (r) => r[agg.field]);
+          res.push(target);
+          break;
+        }
+        case 'min': {
+          const target = _.minBy(data, (r) => r[agg.field]);
+          res.push(target);
+          break;
+        }
+        default:
+      }
+
     });
 
     return _.orderBy(
