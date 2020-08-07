@@ -12,4 +12,4 @@ export type Field = {
   readonly aggregate: 'sum' | 'max' | 'max' | 'raw'; // 可扩展
   /** 字段名 */
   readonly field: string;
-}
+};

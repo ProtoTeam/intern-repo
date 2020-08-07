@@ -2,7 +2,7 @@ import { Field } from './types';
 
 /**
  * 聚合求和
- * @param field 
+ * @param field
  */
 export function SUM(field: string): Field {
   return {
@@ -13,7 +13,7 @@ export function SUM(field: string): Field {
 
 /**
  * 聚合 MAX
- * @param field 
+ * @param field
  */
 export function MAX(field: string): Field {
   return {
@@ -24,7 +24,7 @@ export function MAX(field: string): Field {
 
 /**
  * 聚合 MIN
- * @param field 
+ * @param field
  */
 export function MIN(field: string): Field {
   return {
@@ -35,7 +35,7 @@ export function MIN(field: string): Field {
 
 /**
  * 无聚合字段
- * @param field 
+ * @param field
  */
 export function RAW(field: string): Field {
   return {
