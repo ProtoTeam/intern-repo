@@ -15,6 +15,7 @@
     "eslint": "^6.1.0",
     "eslint-config-prettier": "^6.0.0",
     "eslint-plugin-prettier": "^3.1.0",
+    "husky": "^4.2.5",
     "jest": "^26.2.2",
     "prettier": "^2.0.1",
     "ts-jest": "^26.1.4",
@@ -22,13 +23,18 @@
   },
   "jest": {
     "preset": "ts-jest",
-    "collectCoverage": false,
+    "collectCoverage": true,
     "collectCoverageFrom": [
       "src/**/*.ts",
       "!**/node_modules/**",
       "!**/vendor/**"
     ],
     "testRegex": "/__tests__/.*-spec\\.ts?$"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint && npm run test"
+    }
   },
   "repository": {
     "type": "git",
