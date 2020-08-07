@@ -18,5 +18,8 @@
   "homepage": "https://github.com/ProtoTeam/intern-repo#readme",
   "dependencies": {
     "lodash": "^4.17.19"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.159"
   }
 }
