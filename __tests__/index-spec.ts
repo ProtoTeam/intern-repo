@@ -14,8 +14,10 @@ describe('query', () => {
       { id: 'A', gender: 'M', score: 99 },
       { id: 'B', gender: 'M', score: 90 },
     ]);
-    expect(ds.query().select(RAW('id'), RAW('gender'), RAW('subject'), RAW('score')).orderBy('score', true).limit(2).record()).toEqual([
-      { id: 'C', gender: 'F',subject: 'english', score:60},
+    expect(
+      ds.query().select(RAW('id'), RAW('gender'), RAW('subject'), RAW('score')).orderBy('score', true).limit(2).record()
+    ).toEqual([
+      { id: 'C', gender: 'F', subject: 'english', score: 60 },
       { id: 'D', gender: 'F', subject: 'chinese', score: 80 },
     ]);
   });
