@@ -9,7 +9,12 @@ export type Data = Datum[];
  */
 export type Field = {
   /** 聚合函数 */
-  readonly aggregate: 'sum' | 'max' | 'max' | 'raw'; // 可扩展
+  readonly aggregate: 'sum' | 'max' | 'min' | 'max' | 'raw'; // 可扩展
   /** 字段名 */
   readonly field: string;
-}
+};
+
+export type OrderBy = {
+  readonly field?: string;
+  readonly asc?: boolean;
+};
