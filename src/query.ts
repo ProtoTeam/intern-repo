@@ -3,7 +3,6 @@ import { Data, Field, OrderBy, Datum } from './types';
 import { ID_COLUMN } from './const';
 
 export class Query {
-
   /** 原始数据 */
   private data: Data = [];
 
@@ -21,13 +20,13 @@ export class Query {
    */
   private generateUniqueId(data: Data) {
     return _.map(data, (d: Datum) => {
-      return { ...d,  [ID_COLUMN]: _.uniqueId() };
+      return { ...d, [ID_COLUMN]: _.uniqueId() };
     });
   }
 
   /**
    * 选择字段
-   * @param fields 
+   * @param fields
    */
   public select(...fields: Field[]): Query {
     this.selectOption = fields;
@@ -37,21 +36,21 @@ export class Query {
 
   /**
    * 按照字段排序
-   * @param field 
-   * @param asc 
+   * @param field
+   * @param asc
    */
   public orderBy(field: string, asc?: boolean): Query {
     this.orderByOption = {
       field,
       asc,
     };
-    
+
     return this;
   }
 
   /**
    * 按照字段分组
-   * @param asc 
+   * @param asc
    * @param field
    */
   public groupBy(field: string): Query {
@@ -62,11 +61,11 @@ export class Query {
 
   /**
    * 取 n 条数据
-   * @param n 
+   * @param n
    */
   public limit(n: number): Query {
     this.limitOption = n;
-    
+
     return this;
   }
 
@@ -75,14 +74,14 @@ export class Query {
    */
   public record(): Data {
     const { data, selectOption, groupByOption, orderByOption, limitOption } = this;
-    
+
     const r = _(data);
 
     // 1. 执行分组
     r.groupBy(groupByOption ? groupByOption : ID_COLUMN);
 
     // 2. 执行 select
-    const fields = _.map(selectOption, (f: Field) => f.field));
+    const fields = _.map(selectOption, (f: Field) => f.field);
     r.mapValues((v: Data, k: string) => {
       // 1. 执行所有的 fields
       const aggr = _.filter(selectOption, (f: Field) => f.aggregate !== 'raw');
@@ -94,10 +93,9 @@ export class Query {
         // 按照 max 字段取去最大
         record = _.maxBy(v, _.find(aggr, (f: Field) => f.aggregate === 'max').field);
         record = record ? [record] : [];
-        
       } else {
         // 无聚合
-        record = v; 
+        record = v;
       }
 
       // 只取这些字段
@@ -109,7 +107,7 @@ export class Query {
 
     // 3. 执行 order by
     if (orderByOption) {
-      r.sortBy((d: Datum) => d[orderByOption.field]); // 升降序 
+      r.sortBy((d: Datum) => d[orderByOption.field]); // 升降序
     }
 
     // 4. 执行 limit
