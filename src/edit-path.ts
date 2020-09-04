@@ -85,6 +85,7 @@ class EditsPath {
       } else {
         res.unshift([origin.charAt(i), null]);
       }
+      [i, j] = [pi, pj];
     }
     this.alignments = res;
     return res;
