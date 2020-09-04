@@ -1,29 +1,43 @@
 type Matrix<T> = Array<Array<T>>;
 
 interface AtomEdit {
-  prev?: [number, number];
+  prev: [number, number];
   dist: number;
 }
 
+type NullableString = string;
+
 type EditsTracker = Matrix<AtomEdit>;
 
-type Alignments = Array<[string, string]>;
+type Alignments = Array<[NullableString, NullableString]>;
 
 class EditsPath {
+  private origin: string;
+  private target: string;
   private m: number;
   private n: number;
-  private dp: EditsTracker;
+  private edits: EditsTracker;
+  private alignments: Alignments;
   constructor(origin: string, target: string) {
+    this.origin = origin;
+    this.target = target;
     this.m = origin.length;
     this.n = target.length;
     const { m, n } = this;
-    this.dp = Array(m + 1).fill(Array(n + 1));
+    this.edits = [];
+    for (let i = 0; i < m; i++) {
+      this.edits[i] = Array(n);
+    }
+    this.alignments = [];
+    console.log(this.edits);
   }
-  trackEdits(): EditsTracker {
-    const { m, n, dp } = this;
+  private trackEdits(): EditsTracker {
+    const { m, n, origin, target, edits: dp } = this;
     dp[0][0] = {
       dist: 0,
+      prev: [-1, -1],
     };
+    console.log(dp);
     for (let i = 1; i <= m; i++) {
       dp[i][0] = { dist: i, prev: [i - 1, 0] };
     }
@@ -34,7 +48,7 @@ class EditsPath {
       for (let j = 1; j <= n; j++) {
         const insert = dp[i - 1][j].dist + 1;
         const remove = dp[i][j - 1].dist + 1;
-        const modify = dp[i - 1][j - 1].dist + origin.charAt(i - 1) === origin.charAt(j - 1) ? 0 : 2;
+        const modify = dp[i - 1][j - 1].dist + origin.charAt(i - 1) === target.charAt(j - 1) ? 0 : 2;
         const minimal = Math.min(insert, remove, modify);
         switch (minimal) {
           case insert:
@@ -50,8 +64,42 @@ class EditsPath {
     }
     return dp;
   }
+  getEditsTracker(): EditsTracker {
+    if (!this.edits[0]) {
+      return this.trackEdits();
+    }
+    return this.edits;
+  }
+  private calcAlignments() {
+    const edits = this.getEditsTracker();
+    const { origin, target, m, n } = this;
+    let i = m;
+    let j = n;
+    const res: Alignments = [];
+    while (i >= 0 && j >= 0) {
+      const [pi, pj] = edits[i][j].prev;
+      if (i - pi === 1 && j - pj === 1) {
+        res.unshift([origin.charAt(i), target.charAt(j)]);
+      } else if (i - pi === 1) {
+        res.unshift([null, target.charAt(j)]);
+      } else {
+        res.unshift([origin.charAt(i), null]);
+      }
+    }
+    this.alignments = res;
+    return res;
+  }
+  getAlignments() {
+    if (!this.alignments[0]) {
+      return this.calcAlignments();
+    }
+    return this.alignments;
+  }
 }
 
-function alignments(edits: EditsTracker): Alignments {
-  return null;
-}
+const diffStrings = (from: string, to: string) => {
+  const edits = new EditsPath(from, to);
+  edits.getAlignments();
+};
+
+diffStrings('abc', 'aef');
